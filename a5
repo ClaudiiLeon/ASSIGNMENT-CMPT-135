@@ -1,0 +1,14 @@
+//a5.cpp
+#include <iostream>
+
+using namespace std; 
+
+class Board {
+private:
+
+public:
+
+
+
+
+} ;
