@@ -41,6 +41,44 @@ public:
 
 } ;
 
+struct Human {
+    private:
+
+    public: 
+
+    //determines randomely whether human or computer is Order and Chaos
+    string role() const{
+        //seed to generate random #
+        srand(time(0)); 
+        int num = rand() % 2 + 1;
+        string order = "Order";
+        string chaos = "Chaos";
+
+        if(num == 1){
+            return order;
+        }
+        else{
+            return chaos; 
+        }
+    }
+
+    //determines randomely whether human or computer goes first
+    int move() const {
+        //seed to generate random #
+        srand(time(0));
+        int num2 = rand() % 2 + 1;
+        int first = 1;
+        int second = 2;
+
+        if(num2 == 1){
+            return first;
+        }
+        else{
+            return second;
+        }
+    }
+} ;
+
 void instructions(){
     cout << "Welcome to Order and Chaos!" << "\n";
     cout << "\n";
