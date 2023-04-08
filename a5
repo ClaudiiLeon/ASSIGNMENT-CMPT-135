@@ -135,13 +135,13 @@ void instructions(){
     cout << "\n";
     cout << "This is a 2 player game with a chosen board size from 6 by 6 and up to 9 by 9." << "\n";
     cout << "Each players takes turns and can either place a X or an O in am empty space." << "\n";
-    cout << "Order wins if they get 5 X's or O's horizontally, vertically, or diagonally";
+    cout << "Order wins if they get 5 X's or O's horizontally, vertically, or diagonally" << "\n";
     cout << " and Chaos wins if they prevent this." << "\n";
     cout << "\n";
 }
 
 int main(){
-    void instructions();
+    instructions();
 
     // Get chosen board size from user
     int board_size = 0;
