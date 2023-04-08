@@ -111,9 +111,11 @@ struct Human {
         string chaos = "Chaos";
 
         if(num == 1){
+            cout << "You are Order and computer is Chaos" << "\n";
             return order;
         }
         else{
+            cout << "You are Chaos and computer is Order" << "\n";
             return chaos; 
         }
     }
@@ -127,26 +129,35 @@ struct Human {
         int second = 2;
 
         if(num2 == 1){
+            cout << "You move first and computer moves second" << "\n";
+            cout << "\n";
             return first;
         }
         else{
+            cout << "You move second and computer moves first" << "\n";
+            cout << "\n";
             return second;
         }
     }
 } ;
 
 void instructions(){
-    cout << "Welcome to Order and Chaos!" << "\n";
+    cout << "Welcome to Order and Chaos!\n";
     cout << "\n";
-    cout << "This is a 2 player game with a chosen board size from 6 by 6 and up to 9 by 9." << "\n";
-    cout << "Each players takes turns and can either place a X or an O in am empty space." << "\n";
-    cout << "Order wins if they get 5 X's or O's horizontally, vertically, or diagonally" << "\n";
-    cout << "and Chaos wins if they prevent this." << "\n";
+    cout << "This is a 2 player game with a chosen board size from 6 by 6 and up to 9 by 9.\n";
+    cout << "Each players takes turns and can either place a X or an O in am empty space.\n";
+    cout << "Order wins if they get 5 X's or O's horizontally, vertically, or diagonally";
+    cout << " and Chaos wins if they prevent this.\n";
     cout << "\n";
 }
 
 int main(){
     instructions();
+
+    //Tells user 
+    Human y;
+    y.role();
+    y.move();
 
     // Get chosen board size from user
     int board_size = 0;
@@ -158,5 +169,5 @@ int main(){
     cin >> board_size;
 
     Board x(board_size, board_size);
-    x.print_grid(); 
+    x.print_grid();
 }
