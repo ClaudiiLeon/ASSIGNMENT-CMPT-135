@@ -23,6 +23,14 @@
 //
 // Notes to the Marker
 // -------------------
+// List all known bugs/limitations:
+//
+// List of any extra features:
+//
+// Explanation, in high-level terms, of the strategy the computer player follows:
+//
+// Acknowledgements of any help you received:
+//
 /////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <vector>
@@ -31,12 +39,55 @@
 using namespace std; 
 
 class Board {
+ public:
+    std::vector<vector<char>> grid ;
 
-private:
+    int rows; 
+    int columns; 
 
-public:
+    // constructor
+    Board (int row, int col)
+    : rows(row), columns(col)
+    {
+    
+        for (int i = 0; i < rows + 1 ; i++ ) { // adding +1 so it doesn't
+            // go out of bounds and cause a segmentation fault
+            
+            // printing grid of dots
+            vector<char> single_row; 
+            for (int j= 0; j < columns + 1 ; j++) {
+                single_row.push_back('.');
+            }
+            grid.push_back(single_row);
+            
+            // empty vector index in the uppermost left corner
+            grid[0][0] = ' ';  
+        }
 
+        // initializing first row with numbers
+        for (int i = 0; i < grid.size() ; i++) {
+            grid[0][i+1] = '1' + i;
+        }
 
+        for (int j = 0 ; j < grid.size() - 1 ; j++) {
+            grid[j+1][0] = 'a' + j; // adding 1 to prevent segmentation fault
+        }
+    }
+
+    // print game board 
+    void print_grid () {
+        for (int i =0; i < grid.size(); i++) {
+            for (int j = 0; j < grid[i].size(); j++) {
+                std:: cout << grid[i][j] << " ";        
+            }
+            cout << endl;
+        }
+    }
+    
+    
+    //make_user_move() {}
+    // ask user to make a move
+    // re-ask if invalid 
 
 
 } ;
@@ -89,4 +140,18 @@ void instructions(){
     cout << "\n";
 }
 
-int main(){}
+int main(){
+    void instructions();
+
+    // Get chosen board size from user
+    int board_size = 0;
+    cout << "Please enter :\n";
+    cout << "'6' for a 6 x 6 grid\n";
+    cout << "'7' for a 7 x 7 grid\n";
+    cout << "'8' for an 8 x 8 grid\n";
+    cout << "'9' for a 9 x 9 grid\n";
+    cin >> board_size;
+
+    Board x(board_size, board_size);
+    x.print_grid(); 
+}
