@@ -31,6 +31,11 @@
 //
 // Acknowledgements of any help you received:
 //
+// I used the following site to better understand how to set up the 2D vector
+// containing the game board:
+// https://www.digitalocean.com/community/tutorials/2d-vectors-in-c-plus-plus
+//
+// TA: <insert name>
 /////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <vector>
