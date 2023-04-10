@@ -78,6 +78,31 @@ class Board {
             grid[j+1][0] = 'a' + j; // adding 1 to prevent segmentation fault
         }
     }
+    
+     /*
+    void make_user_move(int row, int col) {
+        string move;
+        cout << "Please enter your move (ex: a2x or a2o, no spaces)";
+        cin >> move;
+        for (int i = 0; i < 3 ; i++){
+            row = s[]
+
+        }
+            
+        } else if (move[2] == 'o') {
+
+        }
+    }
+    */
+    
+     bool is_move_valid () {
+        if (grid[rows][columns] == '.') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     // print game board 
     void print_grid () {
