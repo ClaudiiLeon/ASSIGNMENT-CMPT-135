@@ -151,6 +151,26 @@ void instructions(){
     cout << "\n";
 }
 
+int get_grid_size (){
+    string n;
+    int num = 0;
+    while (true) {
+        try {
+            cin >> n;
+            num = std::stoi(n);
+            if ((num < 6) || (num > 9)) {
+            cout << "Please enter a number between 6 and 9\n"; 
+            } else {
+                break;
+            }
+        } catch (std::invalid_argument& e) {
+            cout << "You have entered an invalid character!\n";
+            cout << "Please enter a single integer between 6 and 9.\n";
+        } 
+    }
+    return num;
+}
+
 int main(){
     instructions();
 
@@ -160,14 +180,15 @@ int main(){
     y.move();
 
     // Get chosen board size from user
-    int board_size = 0;
     cout << "Please enter :\n";
     cout << "'6' for a 6 x 6 grid\n";
     cout << "'7' for a 7 x 7 grid\n";
     cout << "'8' for an 8 x 8 grid\n";
     cout << "'9' for a 9 x 9 grid\n";
-    cin >> board_size;
-
+    
+    int board_size = 0;
+    board_size = get_grid_size(); 
+  
     Board x(board_size, board_size);
     x.print_grid();
 }
