@@ -96,6 +96,7 @@ class Board {
         grid[row][col] = symbol;
     }
 
+    //interpreets users move and checks for validity 
     void make_user_move() {
         string move;
         cout << "Please enter your move (ex: a2X or a2x)" << "\n";
@@ -103,24 +104,110 @@ class Board {
 
         bool check = false;
 
-            if(rows == 6){
-                string cols = move.substr(1,1);
+        if(rows == 6){
+            string cols = move.substr(1,1);
 
-                char row_charac = move[0];
-                char symbol = move[2];
-                int col = std::stoi(cols);
-                int row = row_charac - 96;
-                
+            char row_charac = move[0];
+            char symbol = move[2];
+            int col = std::stoi(cols);
+            int row = row_charac - 96;
+            
+
+            check = is_move_valid(row, col);
+
+            while(check == false){
+                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
+                cin >> move;
+
+                cols = move.substr(1,1);
+
+                row_charac = move[0];
+                symbol = move[2];
+                col = std::stoi(cols);
+                row = row_charac - 96;
 
                 check = is_move_valid(row, col);
-
-                while(check == false){
-                    cout << "Please enter another move (ex. a2x or a2o)" << "\n";
-                    cin >> move;
-                    check = is_move_valid(row, col);
-                }
-                print_newgrid(row, col, symbol);
             }
+            print_newgrid(row, col, symbol);
+        }
+        else if(rows == 7){
+            string cols = move.substr(1,1);
+
+            char row_charac = move[0];
+            char symbol = move[2];
+            int col = std::stoi(cols);
+            int row = row_charac - 96;
+            
+
+            check = is_move_valid(row, col);
+
+            while(check == false){
+                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
+                cin >> move;
+
+                cols = move.substr(1,1);
+
+                row_charac = move[0];
+                symbol = move[2];
+                col = std::stoi(cols);
+                row = row_charac - 96;
+
+                check = is_move_valid(row, col);
+            }
+            print_newgrid(row, col, symbol);
+        }
+        else if(rows == 8){
+            string cols = move.substr(1,1);
+
+            char row_charac = move[0];
+            char symbol = move[2];
+            int col = std::stoi(cols);
+            int row = row_charac - 96;
+            
+
+            check = is_move_valid(row, col);
+
+            while(check == false){
+                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
+                cin >> move;
+
+                cols = move.substr(1,1);
+
+                row_charac = move[0];
+                symbol = move[2];
+                col = std::stoi(cols);
+                row = row_charac - 96;
+
+                check = is_move_valid(row, col);
+            }
+            print_newgrid(row, col, symbol);
+        }
+        else if(rows == 9){
+            string cols = move.substr(1,1);
+
+            char row_charac = move[0];
+            char symbol = move[2];
+            int col = std::stoi(cols);
+            int row = row_charac - 96;
+            
+
+            check = is_move_valid(row, col);
+
+            while(check == false){
+                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
+                cin >> move;
+
+                cols = move.substr(1,1);
+
+                row_charac = move[0];
+                symbol = move[2];
+                col = std::stoi(cols);
+                row = row_charac - 96;
+
+                check = is_move_valid(row, col);
+            }
+            print_newgrid(row, col, symbol);
+        }
     }
 
     //checks if spot is valid
@@ -160,9 +247,77 @@ class Board {
             }
             
         }
- 
+        else if(rows == 7){
+            bool check = false;
+            int c = rand() % 2 + 1;
+            int a;
+            int b;
+
+            while(check == false){
+                a = rand() % 6 + 1;
+                b = rand() % 6 + 1;
+
+                check = is_move_valid(a, b);
+            }
+
+            if(c == 1){
+                char symbol = 'X';
+                print_newgrid(a, b, symbol);
+            }
+            else if(c == 2){
+                char symbol = 'O';
+                print_newgrid(a, b, symbol);
+            }
+            
+        }
+        else if(rows == 8){
+            bool check = false;
+            int c = rand() % 2 + 1;
+            int a;
+            int b;
+
+            while(check == false){
+                a = rand() % 6 + 1;
+                b = rand() % 6 + 1;
+
+                check = is_move_valid(a, b);
+            }
+
+            if(c == 1){
+                char symbol = 'X';
+                print_newgrid(a, b, symbol);
+            }
+            else if(c == 2){
+                char symbol = 'O';
+                print_newgrid(a, b, symbol);
+            }
+            
+        }
+        else if(rows == 9){
+            bool check = false;
+            int c = rand() % 2 + 1;
+            int a;
+            int b;
+
+            while(check == false){
+                a = rand() % 6 + 1;
+                b = rand() % 6 + 1;
+
+                check = is_move_valid(a, b);
+            }
+
+            if(c == 1){
+                char symbol = 'X';
+                print_newgrid(a, b, symbol);
+            }
+            else if(c == 2){
+                char symbol = 'O';
+                print_newgrid(a, b, symbol);
+            }
+        }
     }
 
+    //checks if there is a five in a horizontally, vertically or diagonally 
     bool check_win(){
         if(rows == 6){
             for(int i = 1; i < grid.size(); i++){
@@ -396,15 +551,6 @@ int get_grid_size (){
     return num;
 }
 
-void exit(char answer){
-    if(answer = '1'){
-        exit(0);
-    }
-    else{
-        
-    }
-}
-
 int main(){
     instructions();
 
@@ -436,14 +582,30 @@ int main(){
         }
 
         if(x.check_win() == true){
+            char answer;
             cout << "Order wins and Chaos loses" << "\n";
             cout << "\n";
             cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+            cin >> answer;
+            if(answer == '2'){
+                exit(0);
+            }
+            else if(answer == '1'){
+                main();
+            }
         }
         else{
+            char answer;
             cout << "Chaos wins and Order loses" << "\n";
             cout << "\n";
             cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+            cin >> answer;
+            if(answer == '2'){
+                exit(0);
+            }
+            else if(answer == '1'){
+                main();
+            }
         }
     }
     else if(y.move() == 2){
@@ -456,18 +618,41 @@ int main(){
         }
 
         if(x.check_win() == true){
+            char answer;
             cout << "Order wins and Chaos loses" << "\n";
             cout << "\n";
             cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
             cin >> answer;
-            exit(answer);
+            if(answer == '2'){
+                exit(0);
+            }
+            else if(answer == '1'){
+                main();
+            }
         }
         else{
+            char answer;
             cout << "Chaos wins and Order loses" << "\n";
             cout << "\n";
             cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
             cin >> answer;
-            exit(answer);
+            if(answer == '2'){
+                exit(0);
+            }
+            else if(answer == '1'){
+                main();
+            }
         }
     }
 }
+
+///////////////////////////////////////////////////
+//Report 
+//
+//Bugs:
+//Sometimes computer goes first even though human is supposed to go first.
+//Ocassionally it puts the symbol in a wrong empty spot. 
+//
+//Limitations: 
+//If user inputs a strong with 'x' or 'o' instead of 'X' or 'O' the check win will not declare a winner
+//and instead assumes that the user will input a string like the example given.
