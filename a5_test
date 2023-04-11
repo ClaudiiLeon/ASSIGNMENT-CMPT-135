@@ -1,0 +1,314 @@
+//a5.cpp
+
+/////////////////////////////////////////////////////////////////////////
+//
+// Student Info
+// ------------
+//
+// Name         : Claudia Arana & Relena Wong  
+// Student ID # : <full SFU student number> 
+// SFU Email    : caa71@sfu.ca & rwa140@sfu.ca
+//
+//
+// Statement of Originality
+// ------------------------
+//
+// All the code and comments below are my own original work. For any non-
+// original work, I have provided citations in the comments with enough detail
+// so that someone can see the exact source and extent of the borrowed work.
+//
+// In addition, I have not shared this work with anyone else, and I have not
+// seen solutions from other students, tutors, websites, books, etc.
+//
+//
+// Notes to the Marker
+// -------------------
+// List all known bugs/limitations:
+//
+// List of any extra features:
+//
+// Explanation, in high-level terms, of the strategy the computer player follows:
+//
+// Acknowledgements of any help you received:
+//
+// I used the following site to better understand how to set up the 2D vector
+// containing the game board:
+// https://www.digitalocean.com/community/tutorials/2d-vectors-in-c-plus-plus
+//
+// TA: <insert name>
+/////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std; 
+
+class Board {
+ public:
+    std::vector<vector<char>> grid ;
+
+    int rows; 
+    int columns; 
+
+    // constructor
+    Board (int row, int col)
+    : rows(row), columns(col)
+    {
+    
+        for (int i = 0; i < rows + 1 ; i++ ) { // adding +1 so it doesn't
+            // go out of bounds and cause a segmentation fault
+            
+            // printing grid of dots
+            vector<char> single_row; 
+            for (int j= 0; j < columns + 1 ; j++) {
+                single_row.push_back('.');
+            }
+            grid.push_back(single_row);
+            
+            // empty vector index in the uppermost left corner
+            grid[0][0] = ' ';  
+        }
+
+        // initializing first row with numbers
+        for (int i = 0; i < grid.size() ; i++) {
+            grid[0][i+1] = '1' + i;
+        }
+
+        for (int j = 0 ; j < grid.size() - 1 ; j++) {
+            grid[j+1][0] = 'a' + j; // adding 1 to prevent segmentation fault
+        }
+        
+    }
+
+    // print game board 
+    void print_grid () {
+        for (int i =0; i < grid.size(); i++) {
+            for (int j = 0; j < grid[i].size(); j++) {
+                std:: cout << grid[i][j] << " ";        
+            }
+            cout << endl;
+        }
+    }
+    
+    //make_user_move() {}
+    // ask user to make a move
+    // re-ask if invalid 
+
+    
+    void make_user_move() {
+        string move;
+        cout << "Please enter your move (ex: a2x or a2o, no spaces)";
+        cin >> move;
+
+        bool check = false;
+
+        if(rows == 6){
+            string cols = move.substr(1,1);
+            string symbol = move.substr(2,1);
+
+            char row_charac = move[1];
+            int row = std::atoi(&row_charac);
+            int col = std::stoi(cols);
+
+
+            check = is_move_valid(row, col);
+
+            while(check == false){
+                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
+                cin >> move;
+                check = is_move_valid(row, col);
+            }
+        }
+ 
+    }
+
+    
+    bool is_move_valid(int rows, int cols) {
+        if (grid[rows][cols] == '.') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    void computermove(){
+
+        srand(time(NULL));
+
+        if(rows == 6){
+            int a = rand() % 6 + 1;
+            int b = rand() % 6 + 1;
+
+            int c = rand() % 2 + 1;
+
+            while(is_move_valid(a, b) == false){
+                int a = rand() % 6 + 1;
+                int b = rand() % 6 + 1;
+                if(is_move_valid(a, b) == true){
+                    if(c == 1){
+                        grid[a][b] = 'X';
+                    }
+                    else if(c == 2){
+                        grid[a][b] = 'O';
+                    }
+                }
+            }
+        }
+        else if(rows == 7){
+            int a = rand() % 6 + 1;
+            int b = rand() % 6 + 1;
+
+            int c = rand() % 2 + 1;
+
+            while(is_move_valid(a, b) == false){
+                int a = rand() % 6 + 1;
+                int b = rand() % 6 + 1;
+                if(is_move_valid(a, b) == true){
+                    if(c == 1){
+                        grid[a][b] = 'X';
+                    }
+                    else if(c == 2){
+                        grid[a][b] = 'O';
+                    }
+                }
+            }
+        }
+        else if(rows == 8){
+            int a = rand() % 6 + 1;
+            int b = rand() % 6 + 1;
+
+            int c = rand() % 2 + 1;
+
+            while(is_move_valid(a, b) == false){
+                int a = rand() % 6 + 1;
+                int b = rand() % 6 + 1;
+                if(is_move_valid(a, b) == true){
+                    if(c == 1){
+                        grid[a][b] = 'X';
+                    }
+                    else if(c == 2){
+                        grid[a][b] = 'O';
+                    }
+                }
+            }
+        }
+        else if(rows == 9){
+            int a = rand() % 6 + 1;
+            int b = rand() % 6 + 1;
+
+            int c = rand() % 2 + 1;
+
+            while(is_move_valid(a, b) == false){
+                int a = rand() % 6 + 1;
+                int b = rand() % 6 + 1;
+                if(is_move_valid(a, b) == true){
+                    if(c == 1){
+                        grid[a][b] = 'X';
+                    }
+                    else if(c == 2){
+                        grid[a][b] = 'O';
+                    }
+                }
+            }
+        }
+ 
+    }
+
+} ;
+
+struct Human {
+    private:
+
+    public: 
+
+    //determines randomely whether human or computer is Order and Chaos
+    string role() const{
+        //seed to generate random #
+        srand(time(0)); 
+        int num = rand() % 2 + 1;
+        string order = "Order";
+        string chaos = "Chaos";
+
+        if(num == 1){
+            return order;
+        }
+        else{
+            return chaos; 
+        }
+    }
+
+    //prints the user's role
+    void print_role(string role){
+        if(role == "Order"){
+            cout << "You are Order and computer is Chaos" << "\n";
+        }
+        else{
+            cout << "You are Chaos and computer is Order" << "\n";
+        }
+    }
+    
+
+    //determines randomely whether human or computer goes first
+    int move() const{
+        //seed to generate random #
+        srand(time(0));
+        int num2 = rand() % 2 + 1;
+        int first = 1;
+        int second = 2;
+
+        if(num2 == 1){
+            return first;
+        }
+        else{
+            return second;
+        }
+    }
+
+        //prints the user's move
+    void print_move(int move){
+        if(move == 1){
+            cout << "You move first and computer moves second" << "\n";
+        }
+        else{
+            cout << "You move second and computer moves first" << "\n";
+        }
+    }
+} ;
+
+void instructions(){
+    cout << "Welcome to Order and Chaos!" << "\n";
+    cout << "\n";
+    cout << "This is a 2 player game with a chosen board size from 6 by 6 and up to 9 by 9." << "\n";
+    cout << "Each players takes turns and can either place a X or an O in am empty space." << "\n";
+    cout << "Order wins if they get 5 X's or O's horizontally, vertically, or diagonally" << "\n";
+    cout << "and Chaos wins if they prevent this." << "\n";
+    cout << "\n";
+}
+
+int main(){
+    instructions();
+
+    //Tells user their role and move
+    Human y;
+    y.print_role(y.role());
+    y.print_move(y.move());
+
+    // Get chosen board size from user
+    int board_size = 0;
+    cout << "Please enter :\n";
+    cout << "'6' for a 6 x 6 grid\n";
+    cout << "'7' for a 7 x 7 grid\n";
+    cout << "'8' for an 8 x 8 grid\n";
+    cout << "'9' for a 9 x 9 grid\n";
+    cin >> board_size;
+
+    Board x(board_size, board_size);
+    x.print_grid(); 
+
+    if(y.move() == 1){
+        x.make_user_move();
+    }
+    else{
+        x.computermove();
+    }
+}
