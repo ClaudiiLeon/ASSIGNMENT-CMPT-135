@@ -23,12 +23,6 @@
 //
 // Notes to the Marker
 // -------------------
-// List all known bugs/limitations:
-//
-// List of any extra features:
-//
-// Explanation, in high-level terms, of the strategy the computer player follows:
-//
 // Acknowledgements of any help you received:
 //
 // I used the following site to better understand how to set up the 2D vector
@@ -51,7 +45,7 @@ class Board {
     int rows; 
     int columns; 
 
-    // constructor
+    //Constructor
     Board (int row, int col)
     : rows(row), columns(col)
     {
@@ -81,7 +75,7 @@ class Board {
         
     }
 
-    // print game board 
+    //Print game board 
     void print_grid () {
         for (int i =0; i < grid.size(); i++) {
             for (int j = 0; j < grid[i].size(); j++) {
@@ -91,12 +85,12 @@ class Board {
         }
     }
 
-    // print game board 
+    //Print game board 
     void print_newgrid(int row, int col, char symbol) {
         grid[row][col] = symbol;
     }
 
-    //interpreets users move and checks for validity 
+    //Interpreets users move and checks for validity 
     void make_user_move() {
         string move;
         cout << "Please enter your move (ex: a2X or a2x)" << "\n";
@@ -210,7 +204,7 @@ class Board {
         }
     }
 
-    //checks if spot is valid
+    //Checks if spot is valid
     bool is_move_valid(int rows, int cols) {
         if (grid[rows][cols] == '.') {
             return true;
@@ -219,7 +213,7 @@ class Board {
         }
     }
 
-    //generates random computer move
+    //Generates random computer move
     void computermove(){
 
         srand(time(0));
@@ -317,7 +311,7 @@ class Board {
         }
     }
 
-    //checks if there is a five in a horizontally, vertically or diagonally 
+    //Checks if there is a five in a horizontally, vertically or diagonally 
     bool check_win(){
         if(rows == 6){
             for(int i = 1; i < grid.size(); i++){
@@ -468,7 +462,7 @@ struct Human {
 
     public: 
 
-    //determines randomely whether human or computer is Order and Chaos
+    //Determines randomely whether human or computer is Order and Chaos
     string role() const{
         //seed to generate random #
         srand(time(0)); 
@@ -484,7 +478,7 @@ struct Human {
         }
     }
 
-    //prints the user's role
+    //Prints the user's role
     void print_role(string role){
         if(role == "Order"){
             cout << "You are Order and computer is Chaos" << "\n";
@@ -494,7 +488,7 @@ struct Human {
         }
     }
 
-    //determines randomely whether human or computer goes first
+    //Determines randomely whether human or computer goes first
     int move() const{
         //seed to generate random #
         srand(time(0));
@@ -510,7 +504,7 @@ struct Human {
         }
     }
 
-    //prints the user's move
+    //Prints the user's move
     void print_move(int move){
         if(move == 1){
             cout << "You move first and computer moves second" << "\n";
@@ -521,6 +515,7 @@ struct Human {
     }
 } ;
 
+//Displays the instructions to the player
 void instructions(){
     cout << "Welcome to Order and Chaos!" << "\n";
     cout << "\n";
@@ -531,6 +526,7 @@ void instructions(){
     cout << "\n";
 }
 
+//Takes in and checks grid size
 int get_grid_size (){
     string n;
     int num = 0;
@@ -559,7 +555,7 @@ int main(){
     y.print_role(y.role());
     y.print_move(y.move());
 
-    // Get chosen board size from user
+    //Get chosen board size from user
     cout << "Please enter :\n";
     cout << "'6' for a 6 x 6 grid\n";
     cout << "'7' for a 7 x 7 grid\n";
@@ -646,13 +642,56 @@ int main(){
     }
 }
 
-///////////////////////////////////////////////////
-//Report 
+//////////////////////////////////////////////////////////////////
+//Assignment 5 Report 
 //
-//Bugs:
-//Sometimes computer goes first even though human is supposed to go first.
-//Ocassionally it puts the symbol in a wrong empty spot. 
+////////////////////////////////////////////
 //
-//Limitations: 
-//If user inputs a strong with 'x' or 'o' instead of 'X' or 'O' the check win will not declare a winner
-//and instead assumes that the user will input a string like the example given.
+//// List all known bugs/limitations:
+//
+//A bug in our code is that sometimes it displays the grid with the computer's move before the human 
+//inputs their move even though the human is supposed to go first. Another bug is that ocassionally 
+//our code will put the symbols in the wrong empty spot.
+//
+//One major limitation of our code is that when the user inputs a string with a symbol other than 'X' or 'O'
+//then that character will be in the grid. Thus the check_win function that checks whether there is a winner 
+//will not detect a win unless it is 5 X's or O's horinzontally, vertically or diagonally. Also if the first 
+//character in the string is not one of the characters for the rows then it will result in a "segmentatioon fault". 
+//If a string such as 'a10X' was inputted then row: a, col: 1, and symbol:0 because our make_user_move function
+//assigns the first index of string as row, second index as col and third index as the symbol. 
+//
+////////////////////////////////////////////
+//
+// List of any extra features:
+//
+//Our code tells the human whether they are order or chaos and whether they are moving first or second.
+//
+///////////////////////////////////////////
+//
+// Explanation, in high-level terms, of the strategy the computer player follows:
+//
+//For the computer player we used rand to randomely choose a spot and symbol as their move.
+//This function is seperated based on size of the grid and we did this by checking the number
+//of rows in the board. Next we made a bool variable called 'check' and set it to false to determine whether
+//the spot is available. We also made three int variables a, b, and c. Where 'a' will hold the random
+//generated number from 1-6 as the row coordinate and 'b' as the randomly generated number
+//from 1-6 as the column coordinate. The variable 'c' generates a random number from 1-2 where '1'
+//is 'X' and '2' is 'O' and this is used to determiine the symbol the computer will place.
+//
+//Then we made a while loop that continuously checks if the check variable is false and inside this loop
+//we have 'a' and 'b' set as a randomly generated number from 1-6. As well as check is equal to the the function
+//is_move_valid function that will check the new randomly generated row and col numbers by passing
+//them as a reference to is_move_valid. Therefore, if the spot is available check will become true and break
+//out of the while loop and go to a if and else if statements. These statements determine whether
+//the symbol the computer places is either 'X' or 'O' by having the previously declared 'c' compared to '1' or '2'.
+//If 'c' is '1' then the computer will place a 'X' in the randomly valid spot that was generated. However,
+//if 'c' is '2' then the computer will place a 'O' in the randomly valid spot. Inside
+//each of these if and else if statements the function print_newgrid is called with the variables 'a','b', and 'symbol'
+//passed as a reference to that functiion. 
+//
+//The function print_newgrid takes in the row, column and symbol through pass by reference and grid[a][b]
+//is called and set equal to char 'symbol' to replace the empty spot '.' as the symbol. 
+//
+//This process is repeated for the board sizes 7 by 7, 8 by 8, and 9 by 9. 
+//
+//////////////////////////////////////////////////////////////////
