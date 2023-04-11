@@ -40,6 +40,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cstdlib>
 
 using namespace std; 
 
@@ -89,40 +90,40 @@ class Board {
             cout << endl;
         }
     }
-    
-    //make_user_move() {}
-    // ask user to make a move
-    // re-ask if invalid 
 
-    
+    // print game board 
+    void print_newgrid(int row, int col, char symbol) {
+        grid[row][col] = symbol;
+    }
+
     void make_user_move() {
         string move;
-        cout << "Please enter your move (ex: a2x or a2o, no spaces)";
+        cout << "Please enter your move (ex: a2X or a2x)" << "\n";
         cin >> move;
 
         bool check = false;
 
-        if(rows == 6){
-            string cols = move.substr(1,1);
-            string symbol = move.substr(2,1);
+            if(rows == 6){
+                string cols = move.substr(1,1);
 
-            char row_charac = move[1];
-            int row = std::atoi(&row_charac);
-            int col = std::stoi(cols);
+                char row_charac = move[0];
+                char symbol = move[2];
+                int col = std::stoi(cols);
+                int row = row_charac - 96;
+                
 
-
-            check = is_move_valid(row, col);
-
-            while(check == false){
-                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
-                cin >> move;
                 check = is_move_valid(row, col);
+
+                while(check == false){
+                    cout << "Please enter another move (ex. a2x or a2o)" << "\n";
+                    cin >> move;
+                    check = is_move_valid(row, col);
+                }
+                print_newgrid(row, col, symbol);
             }
-        }
- 
     }
 
-    
+    //checks if spot is valid
     bool is_move_valid(int rows, int cols) {
         if (grid[rows][cols] == '.') {
             return true;
@@ -131,88 +132,179 @@ class Board {
         }
     }
 
+    //generates random computer move
     void computermove(){
 
-        srand(time(NULL));
+        srand(time(0));
 
         if(rows == 6){
-            int a = rand() % 6 + 1;
-            int b = rand() % 6 + 1;
-
+            bool check = false;
             int c = rand() % 2 + 1;
+            int a;
+            int b;
 
-            while(is_move_valid(a, b) == false){
-                int a = rand() % 6 + 1;
-                int b = rand() % 6 + 1;
-                if(is_move_valid(a, b) == true){
-                    if(c == 1){
-                        grid[a][b] = 'X';
-                    }
-                    else if(c == 2){
-                        grid[a][b] = 'O';
-                    }
-                }
+            while(check == false){
+                a = rand() % 6 + 1;
+                b = rand() % 6 + 1;
+
+                check = is_move_valid(a, b);
             }
-        }
-        else if(rows == 7){
-            int a = rand() % 6 + 1;
-            int b = rand() % 6 + 1;
 
-            int c = rand() % 2 + 1;
-
-            while(is_move_valid(a, b) == false){
-                int a = rand() % 6 + 1;
-                int b = rand() % 6 + 1;
-                if(is_move_valid(a, b) == true){
-                    if(c == 1){
-                        grid[a][b] = 'X';
-                    }
-                    else if(c == 2){
-                        grid[a][b] = 'O';
-                    }
-                }
+            if(c == 1){
+                char symbol = 'X';
+                print_newgrid(a, b, symbol);
             }
-        }
-        else if(rows == 8){
-            int a = rand() % 6 + 1;
-            int b = rand() % 6 + 1;
-
-            int c = rand() % 2 + 1;
-
-            while(is_move_valid(a, b) == false){
-                int a = rand() % 6 + 1;
-                int b = rand() % 6 + 1;
-                if(is_move_valid(a, b) == true){
-                    if(c == 1){
-                        grid[a][b] = 'X';
-                    }
-                    else if(c == 2){
-                        grid[a][b] = 'O';
-                    }
-                }
+            else if(c == 2){
+                char symbol = 'O';
+                print_newgrid(a, b, symbol);
             }
-        }
-        else if(rows == 9){
-            int a = rand() % 6 + 1;
-            int b = rand() % 6 + 1;
-
-            int c = rand() % 2 + 1;
-
-            while(is_move_valid(a, b) == false){
-                int a = rand() % 6 + 1;
-                int b = rand() % 6 + 1;
-                if(is_move_valid(a, b) == true){
-                    if(c == 1){
-                        grid[a][b] = 'X';
-                    }
-                    else if(c == 2){
-                        grid[a][b] = 'O';
-                    }
-                }
-            }
+            
         }
  
     }
+
+    bool check_win(){
+        if(rows == 6){
+            for(int i = 1; i < grid.size(); i++){
+                if(grid[i][1] == 'X' && grid[i][2] == 'X' && grid[i][3] == 'X' && grid[i][4] == 'X' &&
+                grid[i][5] == 'X' && grid[i][6] == 'X'){
+                    return true;
+                }
+                else if(grid[i][1] == 'O' && grid[i][2] == 'O' && grid[i][3] == 'O' && grid[i][4] == 'O' &&
+                grid[i][5] == 'O' && grid[i][6] == 'O'){
+                    return true;
+                }
+            }
+
+            for(int j = 1; j < grid.size(); j++){
+                if(grid[1][j] == 'X' && grid[2][j] == 'X' && grid[3][j] == 'X' && grid[4][j] == 'X' &&
+                grid[5][j] == 'X' && grid[6][j] == 'X'){
+                    return true;
+                }
+                else if(grid[1][j] == 'O' && grid[2][j] == 'O' && grid[3][j] == 'O' && grid[4][j] == 'O' &&
+                grid[5][j] == 'O' && grid[6][j] == 'O'){
+                    return true;
+                }
+            }
+
+            if(grid[1][1] == 'X' && grid[2][2] == 'X' && grid[3][3] == 'X' && grid[4][4] == 'X' &&
+            grid[5][5] == 'X' && grid[6][6] == 'X'){
+                return true;
+            }
+            else if(grid[1][6] == 'X' && grid[2][5] == 'X' && grid[3][4] == 'X' && grid[4][3] == 'X' 
+            && grid[2][5] == 'X' && grid[1][6] == 'X'){
+                return true;
+            }
+
+            return false;
+        }
+        else if(rows == 7){
+            for(int i = 1; i < grid.size(); i++){
+                if(grid[i][1] == 'X' && grid[i][2] == 'X' && grid[i][3] == 'X' && grid[i][4] == 'X' &&
+                grid[i][5] == 'X' && grid[i][6] == 'X'){
+                    return true;
+                }
+                else if(grid[i][1] == 'O' && grid[i][2] == 'O' && grid[i][3] == 'O' && grid[i][4] == 'O' &&
+                grid[i][5] == 'O' && grid[i][6] == 'O'){
+                    return true;
+                }
+            }
+
+            for(int j = 1; j < grid.size(); j++){
+                if(grid[1][j] == 'X' && grid[2][j] == 'X' && grid[3][j] == 'X' && grid[4][j] == 'X' &&
+                grid[5][j] == 'X' && grid[6][j] == 'X'){
+                    return true;
+                }
+                else if(grid[1][j] == 'O' && grid[2][j] == 'O' && grid[3][j] == 'O' && grid[4][j] == 'O' &&
+                grid[5][j] == 'O' && grid[6][j] == 'O'){
+                    return true;
+                }
+            }
+
+            if(grid[1][1] == 'X' && grid[2][2] == 'X' && grid[3][3] == 'X' && grid[4][4] == 'X' &&
+            grid[5][5] == 'X' && grid[6][6] == 'X'){
+                return true;
+            }
+            else if(grid[1][6] == 'X' && grid[2][5] == 'X' && grid[3][4] == 'X' && grid[4][3] == 'X' 
+            && grid[2][5] == 'X' && grid[1][6] == 'X'){
+                return true;
+            }
+
+            return false;
+        }
+        else if(rows == 8){
+            for(int i = 1; i < grid.size(); i++){
+                if(grid[i][1] == 'X' && grid[i][2] == 'X' && grid[i][3] == 'X' && grid[i][4] == 'X' &&
+                grid[i][5] == 'X' && grid[i][6] == 'X'){
+                    return true;
+                }
+                else if(grid[i][1] == 'O' && grid[i][2] == 'O' && grid[i][3] == 'O' && grid[i][4] == 'O' &&
+                grid[i][5] == 'O' && grid[i][6] == 'O'){
+                    return true;
+                }
+            }
+
+            for(int j = 1; j < grid.size(); j++){
+                if(grid[1][j] == 'X' && grid[2][j] == 'X' && grid[3][j] == 'X' && grid[4][j] == 'X' &&
+                grid[5][j] == 'X' && grid[6][j] == 'X'){
+                    return true;
+                }
+                else if(grid[1][j] == 'O' && grid[2][j] == 'O' && grid[3][j] == 'O' && grid[4][j] == 'O' &&
+                grid[5][j] == 'O' && grid[6][j] == 'O'){
+                    return true;
+                }
+            }
+
+            if(grid[1][1] == 'X' && grid[2][2] == 'X' && grid[3][3] == 'X' && grid[4][4] == 'X' &&
+            grid[5][5] == 'X' && grid[6][6] == 'X'){
+                return true;
+            }
+            else if(grid[1][6] == 'X' && grid[2][5] == 'X' && grid[3][4] == 'X' && grid[4][3] == 'X' 
+            && grid[2][5] == 'X' && grid[1][6] == 'X'){
+                return true;
+            }
+
+            return false;
+        }
+        else if(rows == 9){
+            for(int i = 1; i < grid.size(); i++){
+                if(grid[i][1] == 'X' && grid[i][2] == 'X' && grid[i][3] == 'X' && grid[i][4] == 'X' &&
+                grid[i][5] == 'X' && grid[i][6] == 'X'){
+                    return true;
+                }
+                else if(grid[i][1] == 'O' && grid[i][2] == 'O' && grid[i][3] == 'O' && grid[i][4] == 'O' &&
+                grid[i][5] == 'O' && grid[i][6] == 'O'){
+                    return true;
+                }
+            }
+
+            for(int j = 1; j < grid.size(); j++){
+                if(grid[1][j] == 'X' && grid[2][j] == 'X' && grid[3][j] == 'X' && grid[4][j] == 'X' &&
+                grid[5][j] == 'X' && grid[6][j] == 'X'){
+                    return true;
+                }
+                else if(grid[1][j] == 'O' && grid[2][j] == 'O' && grid[3][j] == 'O' && grid[4][j] == 'O' &&
+                grid[5][j] == 'O' && grid[6][j] == 'O'){
+                    return true;
+                }
+            }
+
+            if(grid[1][1] == 'X' && grid[2][2] == 'X' && grid[3][3] == 'X' && grid[4][4] == 'X' &&
+            grid[5][5] == 'X' && grid[6][6] == 'X'){
+                return true;
+            }
+            else if(grid[1][6] == 'X' && grid[2][5] == 'X' && grid[3][4] == 'X' && grid[4][3] == 'X' 
+            && grid[2][5] == 'X' && grid[1][6] == 'X'){
+                return true;
+            }
+
+            return false;
+        }
+        else{
+            return false;
+        }
+    }
+    
 
 } ;
 
@@ -246,7 +338,6 @@ struct Human {
             cout << "You are Chaos and computer is Order" << "\n";
         }
     }
-    
 
     //determines randomely whether human or computer goes first
     int move() const{
@@ -264,7 +355,7 @@ struct Human {
         }
     }
 
-        //prints the user's move
+    //prints the user's move
     void print_move(int move){
         if(move == 1){
             cout << "You move first and computer moves second" << "\n";
@@ -285,6 +376,35 @@ void instructions(){
     cout << "\n";
 }
 
+int get_grid_size (){
+    string n;
+    int num = 0;
+    while (true) {
+        try {
+            cin >> n;
+            num = std::stoi(n);
+            if ((num < 6) || (num > 9)) {
+            cout << "Please enter a number between 6 and 9\n"; 
+            } else {
+                break;
+            }
+        } catch (std::invalid_argument& e) {
+            cout << "You have entered an invalid character!\n";
+            cout << "Please enter a single integer between 6 and 9.\n";
+        } 
+    }
+    return num;
+}
+
+void exit(char answer){
+    if(answer = '1'){
+        exit(0);
+    }
+    else{
+        
+    }
+}
+
 int main(){
     instructions();
 
@@ -294,21 +414,60 @@ int main(){
     y.print_move(y.move());
 
     // Get chosen board size from user
-    int board_size = 0;
     cout << "Please enter :\n";
     cout << "'6' for a 6 x 6 grid\n";
     cout << "'7' for a 7 x 7 grid\n";
     cout << "'8' for an 8 x 8 grid\n";
     cout << "'9' for a 9 x 9 grid\n";
-    cin >> board_size;
 
+    int board_size = 0;
+    board_size = get_grid_size(); 
+  
     Board x(board_size, board_size);
-    x.print_grid(); 
+    x.print_grid();
 
     if(y.move() == 1){
-        x.make_user_move();
+        while(x.check_win() == false){
+            x.make_user_move();
+            x.print_grid();
+            cout << "\n";
+            x.computermove();
+            x.print_grid();
+        }
+
+        if(x.check_win() == true){
+            cout << "Order wins and Chaos loses" << "\n";
+            cout << "\n";
+            cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+        }
+        else{
+            cout << "Chaos wins and Order loses" << "\n";
+            cout << "\n";
+            cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+        }
     }
-    else{
-        x.computermove();
+    else if(y.move() == 2){
+        while(x.check_win() == false){
+            x.computermove();
+            x.print_grid();
+            cout << "\n";
+            x.make_user_move();
+            x.print_grid();
+        }
+
+        if(x.check_win() == true){
+            cout << "Order wins and Chaos loses" << "\n";
+            cout << "\n";
+            cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+            cin >> answer;
+            exit(answer);
+        }
+        else{
+            cout << "Chaos wins and Order loses" << "\n";
+            cout << "\n";
+            cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+            cin >> answer;
+            exit(answer);
+        }
     }
 }
