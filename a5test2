@@ -105,82 +105,22 @@ class Board {
         int col = stoi(cols);
         int row = row_charac - 96;
 
-        if(rows == 6){
-        
+        check = is_move_valid(row, col);
+
+        while(check == false){
+            cout << "Please enter another move (ex. a2x or a2o)" << "\n";
+            cin >> move;
+
+            cols = move.substr(1,1);
+
+            row_charac = move[0];
+            symbol = move[2];
+            col = stoi(cols);
+            row = row_charac - 'a' + 1;
+
             check = is_move_valid(row, col);
-
-            while(check == false){
-                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
-                cin >> move;
-
-                cols = move.substr(1,1);
-
-                row_charac = move[0];
-                symbol = move[2];
-                col = stoi(cols);
-                row = row_charac - 'a' + 1;
-
-                check = is_move_valid(row, col);
-            }
-            print_newgrid(row, col, symbol);
         }
-        else if(rows == 7){
-        
-            check = is_move_valid(row, col);
-
-            while(check == false){
-                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
-                cin >> move;
-
-                cols = move.substr(1,1);
-
-                row_charac = move[0];
-                symbol = move[2];
-                col = stoi(cols);
-                row = row_charac - 'a' + 1;
-
-                check = is_move_valid(row, col);
-            }
-            print_newgrid(row, col, symbol);
-        }
-        else if(rows == 8){
-        
-            check = is_move_valid(row, col);
-
-            while(check == false){
-                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
-                cin >> move;
-
-                cols = move.substr(1,1);
-
-                row_charac = move[0];
-                symbol = move[2];
-                col = stoi(cols);
-                row = row_charac - 'a' + 1;
-
-                check = is_move_valid(row, col);
-            }
-            print_newgrid(row, col, symbol);
-        }
-        else if(rows == 9){
-        
-            check = is_move_valid(row, col);
-
-            while(check == false){
-                cout << "Please enter another move (ex. a2x or a2o)" << "\n";
-                cin >> move;
-
-                cols = move.substr(1,1);
-
-                row_charac = move[0];
-                symbol = move[2];
-                col = stoi(cols);
-                row = row_charac - 'a' + 1;
-
-                check = is_move_valid(row, col);
-            }
-            print_newgrid(row, col, symbol);
-        }
+        print_newgrid(row, col, symbol);
         
     }
 
@@ -198,96 +138,25 @@ class Board {
 
         srand(time(0));
 
-        if(rows == 6){
-            bool check = false;
-            int c = rand() % 2 + 1;
-            int a;
-            int b;
+        bool check = false;
+        int c = rand() % 2 + 1;
+        int a;
+        int b;
 
-            while(check == false){
-                a = rand() % 6 + 1;
-                b = rand() % 6 + 1;
+        while(check == false){
+            a = rand() % 6 + 1;
+            b = rand() % 6 + 1;
 
-                check = is_move_valid(a, b);
-            }
-
-            if(c == 1){
-                char symbol = 'X';
-                print_newgrid(a, b, symbol);
-            }
-            else if(c == 2){
-                char symbol = 'O';
-                print_newgrid(a, b, symbol);
-            }
-            
+            check = is_move_valid(a, b);
         }
-        else if(rows == 7){
-            bool check = false;
-            int c = rand() % 2 + 1;
-            int a;
-            int b;
 
-            while(check == false){
-                a = rand() % 6 + 1;
-                b = rand() % 6 + 1;
-
-                check = is_move_valid(a, b);
-            }
-
-            if(c == 1){
-                char symbol = 'X';
-                print_newgrid(a, b, symbol);
-            }
-            else if(c == 2){
-                char symbol = 'O';
-                print_newgrid(a, b, symbol);
-            }
-            
+        if(c == 1){
+            char symbol = 'X';
+            print_newgrid(a, b, symbol);
         }
-        else if(rows == 8){
-            bool check = false;
-            int c = rand() % 2 + 1;
-            int a;
-            int b;
-
-            while(check == false){
-                a = rand() % 6 + 1;
-                b = rand() % 6 + 1;
-
-                check = is_move_valid(a, b);
-            }
-
-            if(c == 1){
-                char symbol = 'X';
-                print_newgrid(a, b, symbol);
-            }
-            else if(c == 2){
-                char symbol = 'O';
-                print_newgrid(a, b, symbol);
-            }
-            
-        }
-        else if(rows == 9){
-            bool check = false;
-            int c = rand() % 2 + 1;
-            int a;
-            int b;
-
-            while(check == false){
-                a = rand() % 6 + 1;
-                b = rand() % 6 + 1;
-
-                check = is_move_valid(a, b);
-            }
-
-            if(c == 1){
-                char symbol = 'X';
-                print_newgrid(a, b, symbol);
-            }
-            else if(c == 2){
-                char symbol = 'O';
-                print_newgrid(a, b, symbol);
-            }
+        else if(c == 2){
+            char symbol = 'O';
+            print_newgrid(a, b, symbol);
         }
     }
 
