@@ -6,7 +6,7 @@
 // ------------
 //
 // Name         : Claudia Arana & Relena Wong  
-// Student ID # : <full SFU student number> 
+// Student ID # : & 301572862
 // SFU Email    : caa71@sfu.ca & rwa140@sfu.ca
 //
 //
@@ -446,15 +446,14 @@ class Board {
             && grid[2][5] == 'X' && grid[1][6] == 'X'){
                 return true;
             }
-
+            cout << "Game over, no winner" << "\n";
             return false;
         }
         else{
+            cout << "Game over, no winner" << "\n";
             return false;
         }
     }
-    
-
 } ;
 
 struct Human {
