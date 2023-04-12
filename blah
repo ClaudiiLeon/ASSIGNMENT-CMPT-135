@@ -1,0 +1,549 @@
+//a5.cpp
+
+/////////////////////////////////////////////////////////////////////////
+//
+// Student Info
+// ------------
+//
+// Name         : Claudia Arana & Relena Wong  
+// Student ID # : & 301572862
+// SFU Email    : caa71@sfu.ca & rwa140@sfu.ca
+//
+//
+// Statement of Originality
+// ------------------------
+//
+// All the code and comments below are my own original work. For any non-
+// original work, I have provided citations in the comments with enough detail
+// so that someone can see the exact source and extent of the borrowed work.
+//
+// In addition, I have not shared this work with anyone else, and I have not
+// seen solutions from other students, tutors, websites, books, etc.
+//
+//
+// Notes to the Marker
+// -------------------
+// Acknowledgements of any help you received:
+//
+// I used the following site to better understand how to set up the 2D vector
+// containing the game board:
+// https://www.digitalocean.com/community/tutorials/2d-vectors-in-c-plus-plus
+//
+// TA: <insert name>
+/////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cstdlib>
+
+using namespace std; 
+
+class Board {
+ public:
+    std::vector<vector<char>> grid ;
+
+    int rows; 
+    int columns; 
+
+    //Constructor
+    Board (int row, int col)
+    : rows(row), columns(col)
+    {
+    
+        for (int i = 0; i < rows + 1 ; i++ ) { // adding +1 so it doesn't
+            // go out of bounds and cause a segmentation fault
+            
+            // printing grid of dots
+            vector<char> single_row; 
+            for (int j= 0; j < columns + 1 ; j++) {
+                single_row.push_back('.');
+            }
+            grid.push_back(single_row);
+            
+            // empty vector index in the uppermost left corner
+            grid[0][0] = ' ';  
+        }
+
+        // initializing first row with numbers
+        for (int i = 0; i < grid.size() ; i++) {
+            grid[0][i+1] = '1' + i;
+        }
+
+        for (int j = 0 ; j < grid.size() - 1 ; j++) {
+            grid[j+1][0] = 'a' + j; // adding 1 to prevent segmentation fault
+        }
+        
+    }
+
+    //Print game board 
+    void print_grid () {
+        for (int i =0; i < grid.size(); i++) {
+            for (int j = 0; j < grid[i].size(); j++) {
+                std:: cout << grid[i][j] << " ";        
+            }
+            cout << endl;
+        }
+    }
+
+    //Print game board 
+    void print_newgrid(int row, int col, char symbol) {
+        grid[row][col] = symbol;
+    }
+
+    //Interprets users move and checks for validity 
+    void make_user_move() {
+        string move;
+        cout << "Please enter your move (ex: a2X or a2O)" << "\n";
+        cin >> move;
+
+        bool check = false;
+        
+        string cols;
+
+        char row_charac;
+        char symbol;
+        int col=0;
+        int row=0;
+
+        check = is_move_valid(row, col);
+
+        while(check == false){
+            cout << "Please enter another move (ex. a2X or a20)" << "\n";
+            cin >> move;
+
+            cols = move.substr(1,1);
+
+            row_charac = move[0];
+            symbol = move[2];
+            try {
+                col = stoi(cols);
+            } catch (std::invalid_argument& e) {
+                cout << " Invalid";
+            }
+            row = row_charac - 'a' + 1;
+
+            check = is_move_valid(row, col);
+        }
+        print_newgrid(row, col, symbol);
+        
+    }
+
+    //Checks if spot is valid
+    bool is_move_valid(int rows, int cols) {
+        if (grid[rows][cols] == '.') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    //Generates random computer move
+    void computermove(){
+
+        srand(time(0));
+
+        bool check = false;
+        int c = rand() % 2 + 1;
+        int a;
+        int b;
+
+        while(check == false){
+            a = rand() % 6 + 1;
+            b = rand() % 6 + 1;
+
+            check = is_move_valid(a, b);
+        }
+
+        if(c == 1){
+            char symbol = 'X';
+            print_newgrid(a, b, symbol);
+        }
+        else if(c == 2){
+            char symbol = 'O';
+            print_newgrid(a, b, symbol);
+        }
+    }
+
+    //Checks if there is a five in a horizontally, vertically or diagonally 
+    bool check_win(){
+        if(rows == 6){
+            for(int i = 1; i < grid.size(); i++){
+                if(grid[i][1] == 'X' && grid[i][2] == 'X' && grid[i][3] == 'X' && grid[i][4] == 'X' &&
+                grid[i][5] == 'X' && grid[i][6] == 'X'){
+                    return true;
+                }
+                else if(grid[i][1] == 'O' && grid[i][2] == 'O' && grid[i][3] == 'O' && grid[i][4] == 'O' &&
+                grid[i][5] == 'O' && grid[i][6] == 'O'){
+                    return true;
+                }
+            }
+
+            for(int j = 1; j < grid.size(); j++){
+                if(grid[1][j] == 'X' && grid[2][j] == 'X' && grid[3][j] == 'X' && grid[4][j] == 'X' &&
+                grid[5][j] == 'X' && grid[6][j] == 'X'){
+                    return true;
+                }
+                else if(grid[1][j] == 'O' && grid[2][j] == 'O' && grid[3][j] == 'O' && grid[4][j] == 'O' &&
+                grid[5][j] == 'O' && grid[6][j] == 'O'){
+                    return true;
+                }
+            }
+
+            if(grid[1][1] == 'X' && grid[2][2] == 'X' && grid[3][3] == 'X' && grid[4][4] == 'X' &&
+            grid[5][5] == 'X' && grid[6][6] == 'X'){
+                return true;
+            }
+            else if(grid[1][6] == 'X' && grid[2][5] == 'X' && grid[3][4] == 'X' && grid[4][3] == 'X' 
+            && grid[2][5] == 'X' && grid[1][6] == 'X'){
+                return true;
+            }
+
+            return false;
+        }
+        else if(rows == 7){
+            for(int i = 1; i < grid.size(); i++){
+                if(grid[i][1] == 'X' && grid[i][2] == 'X' && grid[i][3] == 'X' && grid[i][4] == 'X' &&
+                grid[i][5] == 'X' && grid[i][6] == 'X'){
+                    return true;
+                }
+                else if(grid[i][1] == 'O' && grid[i][2] == 'O' && grid[i][3] == 'O' && grid[i][4] == 'O' &&
+                grid[i][5] == 'O' && grid[i][6] == 'O'){
+                    return true;
+                }
+            }
+
+            for(int j = 1; j < grid.size(); j++){
+                if(grid[1][j] == 'X' && grid[2][j] == 'X' && grid[3][j] == 'X' && grid[4][j] == 'X' &&
+                grid[5][j] == 'X' && grid[6][j] == 'X'){
+                    return true;
+                }
+                else if(grid[1][j] == 'O' && grid[2][j] == 'O' && grid[3][j] == 'O' && grid[4][j] == 'O' &&
+                grid[5][j] == 'O' && grid[6][j] == 'O'){
+                    return true;
+                }
+            }
+
+            if(grid[1][1] == 'X' && grid[2][2] == 'X' && grid[3][3] == 'X' && grid[4][4] == 'X' &&
+            grid[5][5] == 'X' && grid[6][6] == 'X'){
+                return true;
+            }
+            else if(grid[1][6] == 'X' && grid[2][5] == 'X' && grid[3][4] == 'X' && grid[4][3] == 'X' 
+            && grid[2][5] == 'X' && grid[1][6] == 'X'){
+                return true;
+            }
+
+            return false;
+        }
+        else if(rows == 8){
+            for(int i = 1; i < grid.size(); i++){
+                if(grid[i][1] == 'X' && grid[i][2] == 'X' && grid[i][3] == 'X' && grid[i][4] == 'X' &&
+                grid[i][5] == 'X' && grid[i][6] == 'X'){
+                    return true;
+                }
+                else if(grid[i][1] == 'O' && grid[i][2] == 'O' && grid[i][3] == 'O' && grid[i][4] == 'O' &&
+                grid[i][5] == 'O' && grid[i][6] == 'O'){
+                    return true;
+                }
+            }
+
+            for(int j = 1; j < grid.size(); j++){
+                if(grid[1][j] == 'X' && grid[2][j] == 'X' && grid[3][j] == 'X' && grid[4][j] == 'X' &&
+                grid[5][j] == 'X' && grid[6][j] == 'X'){
+                    return true;
+                }
+                else if(grid[1][j] == 'O' && grid[2][j] == 'O' && grid[3][j] == 'O' && grid[4][j] == 'O' &&
+                grid[5][j] == 'O' && grid[6][j] == 'O'){
+                    return true;
+                }
+            }
+
+            if(grid[1][1] == 'X' && grid[2][2] == 'X' && grid[3][3] == 'X' && grid[4][4] == 'X' &&
+            grid[5][5] == 'X' && grid[6][6] == 'X'){
+                return true;
+            }
+            else if(grid[1][6] == 'X' && grid[2][5] == 'X' && grid[3][4] == 'X' && grid[4][3] == 'X' 
+            && grid[2][5] == 'X' && grid[1][6] == 'X'){
+                return true;
+            }
+
+            return false;
+        }
+        else if(rows == 9){
+            for(int i = 1; i < grid.size(); i++){
+                if(grid[i][1] == 'X' && grid[i][2] == 'X' && grid[i][3] == 'X' && grid[i][4] == 'X' &&
+                grid[i][5] == 'X' && grid[i][6] == 'X'){
+                    return true;
+                }
+                else if(grid[i][1] == 'O' && grid[i][2] == 'O' && grid[i][3] == 'O' && grid[i][4] == 'O' &&
+                grid[i][5] == 'O' && grid[i][6] == 'O'){
+                    return true;
+                }
+            }
+
+            for(int j = 1; j < grid.size(); j++){
+                if(grid[1][j] == 'X' && grid[2][j] == 'X' && grid[3][j] == 'X' && grid[4][j] == 'X' &&
+                grid[5][j] == 'X' && grid[6][j] == 'X'){
+                    return true;
+                }
+                else if(grid[1][j] == 'O' && grid[2][j] == 'O' && grid[3][j] == 'O' && grid[4][j] == 'O' &&
+                grid[5][j] == 'O' && grid[6][j] == 'O'){
+                    return true;
+                }
+            }
+
+            if(grid[1][1] == 'X' && grid[2][2] == 'X' && grid[3][3] == 'X' && grid[4][4] == 'X' &&
+            grid[5][5] == 'X' && grid[6][6] == 'X'){
+                return true;
+            }
+            else if(grid[1][6] == 'X' && grid[2][5] == 'X' && grid[3][4] == 'X' && grid[4][3] == 'X' 
+            && grid[2][5] == 'X' && grid[1][6] == 'X'){
+                return true;
+            }
+            cout << "Game over, no winner" << "\n";
+            return false;
+        }
+        else{
+            cout << "Game over, no winner" << "\n";
+            return false;
+        }
+    }
+} ;
+
+struct Human {
+    private:
+
+    public: 
+
+    //Determines randomely whether human or computer is Order and Chaos
+    string role() const{
+        //seed to generate random #
+        srand(time(0)); 
+        int num = rand() % 2 + 1;
+        string order = "Order";
+        string chaos = "Chaos";
+
+        if(num == 1){
+            return order;
+        }
+        else{
+            return chaos; 
+        }
+    }
+
+    //Prints the user's role
+    void print_role(string role){
+        if(role == "Order"){
+            cout << "You are Order and computer is Chaos" << "\n";
+        }
+        else{
+            cout << "You are Chaos and computer is Order" << "\n";
+        }
+    }
+
+    //Determines randomely whether human or computer goes first
+    int move() const{
+        //seed to generate random #
+        srand(time(0));
+        int num2 = rand() % 2 + 1;
+        int first = 1;
+        int second = 2;
+
+        if(num2 == 1){
+            return first;
+        }
+        else{
+            return second;
+        }
+    }
+
+    //Prints the user's move
+    void print_move(int move){
+        if(move == 1){
+            cout << "You move first and computer moves second" << "\n";
+        }
+        else{
+            cout << "You move second and computer moves first" << "\n";
+        }
+    }
+} ;
+
+//Displays the instructions to the player
+void instructions(){
+    cout << "Welcome to Order and Chaos!" << "\n";
+    cout << "\n";
+    cout << "This is a 2 player game with a chosen board size from 6 by 6 and up to 9 by 9." << "\n";
+    cout << "Each players takes turns and can either place a X or an O in am empty space." << "\n";
+    cout << "Order wins if they get 5 X's or O's horizontally, vertically, or diagonally" << "\n";
+    cout << "and Chaos wins if they prevent this." << "\n";
+    cout << "\n";
+}
+
+//Takes in and checks grid size
+int get_grid_size (){
+    string n;
+    int num = 0;
+    while (true) {
+        try {
+            cin >> n;
+            num = std::stoi(n);
+            if ((num < 6) || (num > 9)) {
+            cout << "Please enter a number between 6 and 9\n"; 
+            } else {
+                break;
+            }
+        } catch (std::invalid_argument& e) {
+            cout << "You have entered an invalid character!\n";
+            cout << "Please enter a single integer between 6 and 9.\n";
+        } 
+    }
+    return num;
+}
+
+int main(){
+    instructions();
+
+    //Tells user their role and move
+    Human y;
+    y.print_role(y.role());
+    y.print_move(y.move());
+
+    //Get chosen board size from user
+    cout << "Please enter :\n";
+    cout << "'6' for a 6 x 6 grid\n";
+    cout << "'7' for a 7 x 7 grid\n";
+    cout << "'8' for an 8 x 8 grid\n";
+    cout << "'9' for a 9 x 9 grid\n";
+
+    int board_size = 0;
+    board_size = get_grid_size(); 
+  
+    Board x(board_size, board_size);
+    x.print_grid();
+
+    if(y.move() == 1){
+        while(x.check_win() == false){
+            x.make_user_move();
+            x.print_grid();
+            cout << "\n";
+            x.computermove();
+            x.print_grid();
+        }
+
+        if(x.check_win() == true){
+            char answer;
+            cout << "Order wins and Chaos loses" << "\n";
+            cout << "\n";
+            cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+            cin >> answer;
+            if(answer == '2'){
+                exit(0);
+            }
+            else if(answer == '1'){
+                main();
+            }
+        }
+        else{
+            char answer;
+            cout << "Chaos wins and Order loses" << "\n";
+            cout << "\n";
+            cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+            cin >> answer;
+            if(answer == '2'){
+                exit(0);
+            }
+            else if(answer == '1'){
+                main();
+            }
+        }
+    }
+    else if(y.move() == 2){
+        while(x.check_win() == false){
+            x.computermove();
+            x.print_grid();
+            cout << "\n";
+            x.make_user_move();
+            x.print_grid();
+        }
+
+        if(x.check_win() == true){
+            char answer;
+            cout << "Order wins and Chaos loses" << "\n";
+            cout << "\n";
+            cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+            cin >> answer;
+            if(answer == '2'){
+                exit(0);
+            }
+            else if(answer == '1'){
+                main();
+            }
+        }
+        else{
+            char answer;
+            cout << "Chaos wins and Order loses" << "\n";
+            cout << "\n";
+            cout << "Do you want to play again? If yes type '1', if no type '2' "<< "\n";
+            cin >> answer;
+            if(answer == '2'){
+                exit(0);
+            }
+            else if(answer == '1'){
+                main();
+            }
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////
+//Assignment 5 Report 
+//
+////////////////////////////////////////////
+//
+//// List all known bugs/limitations:
+//
+//A bug in our code is that sometimes it displays the grid with the computer's move before the human 
+//inputs their move even though the human is supposed to go first. Another bug is that ocassionally 
+//our code will put the symbols in the wrong empty spot.
+//
+//One major limitation of our code is that when the user inputs a string with a symbol other than 'X' or 'O'
+//then that character will be in the grid. Thus the check_win function that checks whether there is a winner 
+//will not detect a win unless it is 5 X's or O's horinzontally, vertically or diagonally. Also if the first 
+//character in the string is not one of the characters for the rows then it will result in a "segmentatioon fault". 
+//If a string such as 'a10X' was inputted then row: a, col: 1, and symbol:0 because our make_user_move function
+//assigns the first index of string as row, second index as col and third index as the symbol. 
+//
+////////////////////////////////////////////
+//
+// List of any extra features:
+//
+//Our code tells the human whether they are order or chaos and whether they are moving first or second.
+//
+///////////////////////////////////////////
+//
+// Explanation, in high-level terms, of the strategy the computer player follows:
+//
+//For the computer player we used rand to randomely choose a spot and symbol as their move.
+//This function is seperated based on size of the grid and we did this by checking the number
+//of rows in the board. Next we made a bool variable called 'check' and set it to false to determine whether
+//the spot is available. We also made three int variables a, b, and c. Where 'a' will hold the random
+//generated number from 1-6 as the row coordinate and 'b' as the randomly generated number
+//from 1-6 as the column coordinate. The variable 'c' generates a random number from 1-2 where '1'
+//is 'X' and '2' is 'O' and this is used to determiine the symbol the computer will place.
+//
+//Then we made a while loop that continuously checks if the check variable is false and inside this loop
+//we have 'a' and 'b' set as a randomly generated number from 1-6. As well as check is equal to the the function
+//is_move_valid function that will check the new randomly generated row and col numbers by passing
+//them as a reference to is_move_valid. Therefore, if the spot is available check will become true and break
+//out of the while loop and go to a if and else if statements. These statements determine whether
+//the symbol the computer places is either 'X' or 'O' by having the previously declared 'c' compared to '1' or '2'.
+//If 'c' is '1' then the computer will place a 'X' in the randomly valid spot that was generated. However,
+//if 'c' is '2' then the computer will place a 'O' in the randomly valid spot. Inside
+//each of these if and else if statements the function print_newgrid is called with the variables 'a','b', and 'symbol'
+//passed as a reference to that functiion. 
+//
+//The function print_newgrid takes in the row, column and symbol through pass by reference and grid[a][b]
+//is called and set equal to char 'symbol' to replace the empty spot '.' as the symbol. 
+//
+//This process is repeated for the board sizes 7 by 7, 8 by 8, and 9 by 9. 
+//
+//////////////////////////////////////////////////////////////////
