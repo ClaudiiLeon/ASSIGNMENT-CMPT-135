@@ -1,22 +1,18 @@
-    //Interprets users move and checks for validity 
-    void make_user_move() {
+   void make_user_move() {
         string move;
         cout << "Please enter your move (ex: a2X or a2x)" << "\n";
         cin >> move;
 
         bool check = false;
-        
-        string cols = move.substr(1,1);
 
         char row_charac = move[0];
         char symbol = move[2];
-        int col = stoi(cols);
+        int col = move[1] - '0';
         int row = row_charac - 96;
 
-        if(rows == 6){
-        
-            check = is_move_valid(row, col);
+        check = is_move_valid(row, col);
 
+        if(rows == 6){
             while(check == false){
                 cout << "Please enter another move (ex. a2x or a2o)" << "\n";
                 cin >> move;
@@ -25,17 +21,14 @@
 
                 row_charac = move[0];
                 symbol = move[2];
-                col = stoi(cols);
-                row = row_charac - 96;
+                col = move[1] - '0';
+                row = row_charac - 'a' + 1;
 
                 check = is_move_valid(row, col);
             }
             print_newgrid(row, col, symbol);
         }
         else if(rows == 7){
-        
-            check = is_move_valid(row, col);
-
             while(check == false){
                 cout << "Please enter another move (ex. a2x or a2o)" << "\n";
                 cin >> move;
@@ -44,17 +37,14 @@
 
                 row_charac = move[0];
                 symbol = move[2];
-                col = stoi(cols);
-                row = row_charac - 96;
+                col = move[1] - '0';
+                row = row_charac - 'a' + 1;
 
                 check = is_move_valid(row, col);
             }
             print_newgrid(row, col, symbol);
         }
         else if(rows == 8){
-        
-            check = is_move_valid(row, col);
-
             while(check == false){
                 cout << "Please enter another move (ex. a2x or a2o)" << "\n";
                 cin >> move;
@@ -63,17 +53,14 @@
 
                 row_charac = move[0];
                 symbol = move[2];
-                col = stoi(cols);
-                row = row_charac - 96;
+                col = move[1] - '0';
+                row = row_charac - 'a' + 1;
 
                 check = is_move_valid(row, col);
             }
             print_newgrid(row, col, symbol);
         }
         else if(rows == 9){
-        
-            check = is_move_valid(row, col);
-
             while(check == false){
                 cout << "Please enter another move (ex. a2x or a2o)" << "\n";
                 cin >> move;
@@ -82,11 +69,20 @@
 
                 row_charac = move[0];
                 symbol = move[2];
-                col = stoi(cols);
-                row = row_charac - 96;
+                col = move[1] - '0';
+                row = row_charac - 'a' + 1;
 
                 check = is_move_valid(row, col);
             }
             print_newgrid(row, col, symbol);
+        }
+    }
+
+    //Checks if spot is valid
+    bool is_move_valid(int rows, int cols) {
+        if (grid[rows][cols] == '.') {
+            return true;
+        } else {
+            return false;
         }
     }
