@@ -93,22 +93,22 @@ class Board {
     //Interprets users move and checks for validity 
     void make_user_move() {
         string move;
-        cout << "Please enter your move (ex: a2X or a2x)" << "\n";
+        cout << "Please enter your move (ex: a2X or a2O)" << "\n";
         cin >> move;
 
         bool check = false;
         
-        string cols = move.substr(1,1);
+        string cols;
 
-        char row_charac = move[0];
-        char symbol = move[2];
-        int col = stoi(cols);
-        int row = row_charac - 96;
+        char row_charac;
+        char symbol;
+        int col;
+        int row;
 
         check = is_move_valid(row, col);
 
         while(check == false){
-            cout << "Please enter another move (ex. a2x or a2o)" << "\n";
+            cout << "Please enter another move (ex. a2X or a20)" << "\n";
             cin >> move;
 
             cols = move.substr(1,1);
